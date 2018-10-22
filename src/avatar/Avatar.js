@@ -51,6 +51,7 @@ const Avatar = ({
   ImageComponent,
   ...attributes
 }) => {
+  // changes were made by lavajeff
   let avatarWidth = DEFAULT_SIZES[size] || DEFAULT_SIZES.small;
   let avatarHeight = avatarWidth;
   if (!!height && !!width) {
