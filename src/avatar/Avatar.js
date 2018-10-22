@@ -35,6 +35,8 @@ const Avatar = ({
   iconStyle,
   source,
   size,
+  height,
+  width,
   avatarStyle,
   rounded,
   title,
@@ -49,14 +51,28 @@ const Avatar = ({
   ImageComponent,
   ...attributes
 }) => {
-  const width =
-    typeof size === 'number'
-      ? size
-      : DEFAULT_SIZES[size] || DEFAULT_SIZES.small;
-  const height = width;
-  const titleSize = width / 2;
-  const iconSize = width / 2;
-  const editButtonSize = editButton.size || (width + height) / 2 / 3;
+  let avatarWidth = DEFAULT_SIZES[size] || DEFAULT_SIZES.small;
+  let avatarHeight = avatarWidth;
+  if (!!height && !!width) {
+    avatarHeight = height;
+    avatarWidth = width;
+  } else if (!!height) {
+    avatarHeight = height;
+    avatarWidth = height;
+  } else if (!!width) {
+    avatarHeight = width;
+    avatarWidth = width;
+  } else {
+    avatarWidth =
+      typeof size === 'number'
+        ? size
+        : DEFAULT_SIZES[size] || DEFAULT_SIZES.small;
+    avatarHeight = avatarWidth;
+  }
+  const titleSize = avatarWidth / 2;
+  const iconSize = avatarWidth / 2;
+  const editButtonSize =
+    editButton.size || (avatarWidth + avatarHeight) / 2 / 3;
 
   const Utils = showEditButton && (
     <TouchableHighlight
@@ -107,8 +123,8 @@ const Avatar = ({
       onLongPress={onLongPress}
       style={[
         styles.container,
-        { height, width },
-        rounded && { borderRadius: width / 2, overflow: 'hidden' },
+        { height: avatarHeight, width: avatarWidth },
+        rounded && { borderRadius: avatarWidth / 2, overflow: 'hidden' },
         containerStyle,
       ]}
       {...attributes}
@@ -198,6 +214,8 @@ Avatar.propTypes = {
     PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
     PropTypes.number,
   ]),
+  height: PropTypes.number,
+  width: PropTypes.number,
   showEditButton: PropTypes.bool,
   onEditPress: PropTypes.func,
   editButton: PropTypes.shape({
